@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cybersecurity Wallet Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cybersecurity Wallet Dashboard</h1>
+    <h2>Seed Phrases</h2>
+    <form action="/generate_seed" method="post">
+        <button type="submit" class="button">Generate New Seed</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Seed</th>
+                <th>Used</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for seed in seeds %}
+            <tr>
+                <td>{{ loop.index0 }}</td>
+                <td>{{ seed.seed }}</td>
+                <td>{{ "Yes" if seed.used else "No" }}</td>
+                <td>
+                    {% if not seed.used %}
+                    <a href="{{ url_for('check_balance', seed_index=loop.index0) }}" class="button">Check Balance</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Logs</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Seed</th>
+                <th>Wallet</th>
+                <th>Balance (BTC)</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.seed }}</td>
+                <td>{{ log.wallet_address }}</td>
+                <td>{{ log.balance }}</td>
+                <td>{{ log.timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
